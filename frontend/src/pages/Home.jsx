@@ -416,22 +416,87 @@ const BankSetuFinance = () => {
         </nav>
       </header>
 
-      <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        <canvas ref={canvasRef} className="absolute inset-0 bg-gradient-to-br from-blue-900 via-blue-700 to-blue-500" />
-        <div className="heroSectiontext relative z-10 text-center px-4 max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
-            Your Dream Loan, <span className="text-yellow-400">Simplified</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-blue-100 mb-8">
-            Get instant loan approvals from top banks with competitive interest rates
-          </p>
-          <button style={{
-            background:
-              "linear-gradient(110deg, #1e40af, #60a5fa, #1e40af)",
-            backgroundSize: "200% 100%"
-          }} ref={btnRef} onClick={() => setShowInquiryModal(true)} id='applyBtn' className="applyBtn bg-gradient-to-r cursor-pointer from-yellow-500 to-yellow-600 text-yellow-500 px-8 py-4 rounded-full text-lg font-semibold hover:shadow-2xl hover:scale-105 transition-all">
-            Apply for Loan Now
-          </button>
+      <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-[#0A2342]">
+        <canvas ref={canvasRef} className="absolute inset-0 bg-gradient-to-br from-[#0A2342] via-blue-900 to-[#123866]" />
+
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-yellow-400/10 blur-3xl" />
+          <div className="absolute top-1/3 -left-24 h-80 w-80 rounded-full bg-blue-300/10 blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 h-64 w-64 rounded-full bg-yellow-500/10 blur-3xl" />
+          <div className="absolute top-1/4 right-[12%] hidden lg:flex h-12 w-12 items-center justify-center rounded-2xl border border-white/15 bg-white/10 text-xl text-yellow-300 backdrop-blur-md rotate-6">🏠</div>
+          <div className="absolute bottom-1/4 right-[26%] hidden lg:flex h-12 w-12 items-center justify-center rounded-2xl border border-white/15 bg-white/10 text-xl text-yellow-300 backdrop-blur-md -rotate-6">🚗</div>
+          <div className="absolute top-[22%] right-[30%] hidden lg:flex h-12 w-12 items-center justify-center rounded-2xl border border-white/15 bg-white/10 text-xl text-yellow-300 backdrop-blur-md rotate-3">🎓</div>
+          <div className="absolute bottom-[18%] right-[8%] hidden lg:flex h-12 w-12 items-center justify-center rounded-2xl border border-white/15 bg-white/10 text-xl text-yellow-300 backdrop-blur-md -rotate-3">🏢</div>
+        </div>
+
+        <div className="heroSectiontext relative z-10 w-full max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <div className="text-left max-w-2xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-yellow-300/25 bg-white/10 px-4 py-2 text-sm text-blue-50 backdrop-blur-md">
+              <span className="h-2 w-2 rounded-full bg-yellow-400 animate-pulse" />
+              भरोसेमंद लोन सलाह • कई बैंक विकल्प
+            </div>
+
+            <h1 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-white">
+              आपके सपनों को <span className="text-yellow-400">सही बैंक</span> से जोड़ने वाला भरोसेमंद साथी।
+            </h1>
+
+            <p className="mt-5 max-w-xl text-base sm:text-lg leading-7 text-blue-100/90">
+              घर, कार, बिज़नेस, एजुकेशन या पर्सनल लोन—हम आपकी प्रोफाइल के अनुसार सही बैंक चुनने में मदद करते हैं ताकि आपको बेहतर ब्याज दर, तेज़ प्रोसेसिंग और आसान अप्रूवल मिल सके।
+            </p>
+
+            <div className="mt-8 flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={() => setShowInquiryModal(true)}
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-yellow-500 px-6 py-3.5 text-sm sm:text-base font-bold text-blue-950 shadow-lg shadow-yellow-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-yellow-400 hover:shadow-xl cursor-pointer"
+              >
+                📞 अभी निःशुल्क सलाह लें
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </button>
+
+              <a
+                href="#apply"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-white/10 px-6 py-3.5 text-sm sm:text-base font-semibold text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/15 hover:border-yellow-300/40"
+              >
+                📋 अपनी पात्रता जांचें
+              </a>
+            </div>
+
+            <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-sm text-blue-100/80">
+              <span>✔ कोई छिपा शुल्क नहीं</span>
+              <span>✔ अनेक बैंक विकल्प</span>
+              <span>✔ विशेषज्ञ लोन सलाह</span>
+            </div>
+          </div>
+
+          <div className="relative hidden lg:block min-h-[430px]">
+            <div className="absolute inset-6 rounded-[2rem] border border-white/10 bg-white/5 shadow-2xl backdrop-blur-sm" />
+
+            <div className="absolute left-10 top-10 w-44 rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-xl shadow-xl -rotate-3">
+              <div className="text-xs uppercase tracking-wider text-blue-200">Better Match</div>
+              <div className="mt-2 text-2xl font-bold text-white">12+ Banks</div>
+              <div className="mt-1 text-xs text-blue-100/70">Compare your options</div>
+            </div>
+
+            <div className="absolute right-4 top-1/2 w-64 -translate-y-1/2 rounded-[2rem] border border-yellow-300/25 bg-white/10 p-6 backdrop-blur-xl shadow-2xl">
+              <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full border border-yellow-300/25 bg-gradient-to-br from-yellow-300/20 to-white/5 text-7xl">
+                🏡
+              </div>
+              <div className="mt-5 text-center">
+                <div className="text-lg font-semibold text-white">Your dream. Your loan.</div>
+                <div className="mt-1 text-sm text-blue-100/70">Guidance from enquiry to approval</div>
+              </div>
+            </div>
+
+            <div className="absolute bottom-8 left-14 rounded-2xl border border-white/15 bg-white/10 px-5 py-4 backdrop-blur-xl shadow-xl rotate-2">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-xl bg-yellow-400/15 flex items-center justify-center text-xl">₹</div>
+                <div>
+                  <div className="text-xs text-blue-100/70">Simple process</div>
+                  <div className="font-semibold text-white">Fast & guided</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
