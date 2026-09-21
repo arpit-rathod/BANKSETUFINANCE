@@ -14,8 +14,38 @@ const BankSetuFinance = () => {
   const [showInquiryModal, setShowInquiryModal] = useState(false);
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [heroTitleIndex, setHeroTitleIndex] = useState(0);
+  const [heroTaglineIndex, setHeroTaglineIndex] = useState(0);
 
   const canvasRef = useRef(null);
+  const heroTitleRef = useRef(null);
+  const heroContentRef = useRef(null);
+  const heroVisualRef = useRef(null);
+
+  const heroTitles = [
+    "आपके सपनों को सही बैंक से जोड़ने वाला भरोसेमंद साथी।",
+    "सही बैंक, सही लोन, सही मार्गदर्शन — आपकी मंज़िल तक हमारा साथ।",
+    "हम लोन नहीं देते, हम आपको सही बैंक से सही लोन दिलाने में मदद करते हैं।",
+    "आपका सपना, हमारी कोशिश — भरोसेमंद बैंकों से आसान लोन।",
+    "सही सलाह, सही बैंक, आसान लोन प्रक्रिया।",
+    "भारत के भरोसेमंद बैंकों से लोन दिलाने का आपका विश्वसनीय साथी।",
+    "घर, गाड़ी, बिज़नेस या शिक्षा — सही बैंक से सही लोन तक आपका सफर आसान बनाते हैं।",
+    "लोन की तलाश खत्म, सही बैंक से शुरुआत।",
+    "हर ज़रूरत के लिए सही बैंक, हर सपने के लिए सही लोन।"
+  ];
+
+  const heroTaglines = [
+    "भरोसेमंद लोन सलाह • कई बैंक विकल्प",
+    "आपकी जरूरत • सही बैंक • सही समाधान",
+    "आसान लोन • बेहतर विकल्प • विशेषज्ञ सलाह",
+    "आपके सपनों के लिए सही वित्तीय साथी",
+    "घर से बिज़नेस तक • हर जरूरत का लोन",
+    "कई बैंक विकल्प • आपकी प्रोफाइल के अनुसार",
+    "सरल प्रक्रिया • स्पष्ट मार्गदर्शन",
+    "आपकी प्रोफाइल • हमारी विशेषज्ञ सलाह",
+    "लोन की तलाश अब आसान",
+    "सही बैंक तक पहुंचने का आसान रास्ता"
+  ];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -66,25 +96,33 @@ const BankSetuFinance = () => {
   //     });
   //   }
   // }, [])
+  // Subtle parallax: move hero layers independently instead of shrinking the complete hero.
   useEffect(() => {
-    gsap.to(".heroSectiontext", {
-      x: -100,
-      yPercent: 5,
-      duration: 4,
-      scale: 0.6,
-      ease: "power2.in",
-      scrollTrigger: {
-        // scale: 0.4,
-        trigger: ".heroSectiontext",
-        start: "top 30%",
-        end: "top 0%",
-        scroller: 'body',
-        markers: true,
-        scrub: 1, // Fixed typo from "scub"
-        toggleActions: "play none none reverse",
-        // pin: true,  // ✅ Keeps element pinned after reaching end
-      }
+    const ctx = gsap.context(() => {
+      gsap.to(heroContentRef.current, {
+        y: -55,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#home",
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+
+      gsap.to(heroVisualRef.current, {
+        y: -90,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#home",
+          start: "top top",
+          end: "bottom top",
+          scrub: 1.2,
+        },
+      });
     });
+
+    return () => ctx.revert();
   }, [])
   // useEffect(() => {
   //   gsap.to(".heroSectiontext", {
@@ -95,7 +133,7 @@ const BankSetuFinance = () => {
   //       start: "top 20%",
   //       end: "top 10%",
   //       // scroller: 'body',
-  //       // markers: true,
+  //       //
   //       scrub: 1, // Fixed typo from "scub"
   //       toggleActions: "play reverse play reverse"
   //     }
@@ -103,28 +141,28 @@ const BankSetuFinance = () => {
   // }, [])
 
 
+  // Premium opening sequence: reveal the hero in reading order.
   useEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-    gsap.fromTo('.heroSectiontext', {
-      // backgroundPosition: "200% center",
-      scale: 0.5,
-      opacity: 0.5,
-      repeat: 0,
-      y: 100              // infinite loop (अनंत दोहराव)
-      // ease: "linear"            // constant speed (समान गति)
-    }, {
-      scale: 1,
-      opacity: 1,
-      duration: 1.5,
-      ease: "power2.out",
-      y: 0,              // infinite loop (अनंत दोहराव)
+      tl.from("#firmName", { y: -20, opacity: 0, duration: 0.6 })
+        .from(".heroBadge", { y: 20, opacity: 0, scale: 0.95, duration: 0.5 }, "-=0.2")
+        .from(".heroTitle", { y: 35, opacity: 0, duration: 0.65 }, "-=0.15")
+        .from(".heroDescription", { y: 20, opacity: 0, duration: 0.55 }, "-=0.2")
+        .from(".heroCta", { y: 18, opacity: 0, duration: 0.45, stagger: 0.1 }, "-=0.15")
+        .from(".heroTrust", { y: 12, opacity: 0, duration: 0.4 }, "-=0.1")
+        .from(".heroVisual", { x: 45, opacity: 0, duration: 0.8 }, "-=0.55");
+
+      gsap.to("#applyBtn", {
+        backgroundPosition: "200% center",
+        duration: 3,
+        repeat: -1,
+        ease: "linear"
+      });
     });
-    gsap.to('#applyBtn', {
-      backgroundPosition: "200% center",
-      duration: 3,
-      repeat: -1,               // infinite loop (अनंत दोहराव)
-      ease: "linear"            // constant speed (समान गति)
-    });
+
+    return () => ctx.revert();
   }, [])
   // gsap.fromTo(
   //   btnRef.current,
@@ -141,6 +179,31 @@ const BankSetuFinance = () => {
   // };
   // function TapButton() {
   // }
+  // Rotate the small badge every 3.5s and the main title every 5.5s.
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setHeroTaglineIndex((index) => (index + 1) % heroTaglines.length);
+    }, 3500);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setHeroTitleIndex((index) => (index + 1) % heroTitles.length);
+    }, 5500);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (!heroTitleRef.current) return;
+
+    gsap.fromTo(
+      heroTitleRef.current,
+      { y: 24, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.55, ease: "power3.out" }
+    );
+  }, [heroTitleIndex]);
+
   useEffect(() => {
     gsap.fromTo('#firmName', {
       y: 20,
@@ -372,7 +435,7 @@ const BankSetuFinance = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <header className={`fixed w-full top-0 z-40 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg' : 'bg-gradient-to-r from-blue-900 to-blue-600'}`}>
+      <header className={`fixed w-full top-0 z-40 transition-all duration-500 ${scrolled ? 'bg-[#0A2342]/95 backdrop-blur-xl shadow-xl border-b border-white/10' : 'bg-[#0A2342]/45 backdrop-blur-md border-b border-white/10'}`}>
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div id='firmName' className="flex justify-between items-center h-20">
 
@@ -380,7 +443,7 @@ const BankSetuFinance = () => {
               <div className='pt-2'>
                 <img src={BSFLogo} className='w-8 h-8 sm:w-12 sm:h-12 rounded-full' alt="" />
               </div>
-              <div className={`absolute whitespace-nowrap text-lg sm:text-4xl ml-10 sm:ml-15 font-bold  ${scrolled ? 'text-blue-900' : 'text-white'}`}>
+              <div className="absolute whitespace-nowrap text-lg sm:text-4xl ml-10 sm:ml-15 font-bold text-white">
                 <span className="text-yellow-500">BANK</span> SETU FINANCE
               </div>
             </div>
@@ -388,7 +451,7 @@ const BankSetuFinance = () => {
             <ul className="hidden md:flex space-x-8">
               {['Home', 'Loans', 'Banks', 'Apply', 'Feedback'].map((item) => (
                 <li key={item}>
-                  <a href={`#${item.toLowerCase()}`} className={`font-medium transition-colors ${scrolled ? 'text-gray-700 hover:text-yellow-600' : 'text-white hover:text-yellow-300'}`}>
+                  <a href={`#${item.toLowerCase()}`} className="font-medium text-white/90 hover:text-yellow-300 transition-colors">
                     {item}
                   </a>
                 </li>
@@ -396,7 +459,7 @@ const BankSetuFinance = () => {
             </ul>
 
             <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="md:hidden">
-              {mobileMenuOpen ? <X className={scrolled ? 'text-gray-700' : 'text-white'} size={28} /> : <Menu className={scrolled ? 'text-gray-700' : 'text-white'} size={28} />}
+              {mobileMenuOpen ? <X className="text-white" size={28} /> : <Menu className="text-white" size={28} />}
             </button>
           </div>
 
@@ -429,25 +492,28 @@ const BankSetuFinance = () => {
           <div className="absolute bottom-[18%] right-[8%] hidden lg:flex h-12 w-12 items-center justify-center rounded-2xl border border-white/15 bg-white/10 text-xl text-yellow-300 backdrop-blur-md -rotate-3">🏢</div>
         </div>
 
-        <div className="heroSectiontext relative z-10 w-full max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        <div ref={heroContentRef} className="heroSectiontext relative z-10 w-full max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="text-left max-w-2xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-yellow-300/25 bg-white/10 px-4 py-2 text-sm text-blue-50 backdrop-blur-md">
-              <span className="h-2 w-2 rounded-full bg-yellow-400 animate-pulse" />
-              भरोसेमंद लोन सलाह • कई बैंक विकल्प
+            <div className="heroBadge inline-flex items-center gap-2 rounded-full border border-yellow-300/25 bg-white/10 px-4 py-2 text-sm text-blue-50 backdrop-blur-md overflow-hidden">
+              <span className="h-2 w-2 shrink-0 rounded-full bg-yellow-400 animate-pulse" />
+              <span key={heroTaglineIndex}>{heroTaglines[heroTaglineIndex]}</span>
             </div>
 
-            <h1 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-white">
-              आपके सपनों को <span className="text-yellow-400">सही बैंक</span> से जोड़ने वाला भरोसेमंद साथी।
+            <h1
+              ref={heroTitleRef}
+              className="heroTitle mt-6 min-h-[170px] sm:min-h-[145px] lg:min-h-[155px] text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-white"
+            >
+              {heroTitles[heroTitleIndex]}
             </h1>
 
-            <p className="mt-5 max-w-xl text-base sm:text-lg leading-7 text-blue-100/90">
+            <p className="heroDescription mt-5 max-w-xl text-base sm:text-lg leading-7 text-blue-100/90">
               घर, कार, बिज़नेस, एजुकेशन या पर्सनल लोन—हम आपकी प्रोफाइल के अनुसार सही बैंक चुनने में मदद करते हैं ताकि आपको बेहतर ब्याज दर, तेज़ प्रोसेसिंग और आसान अप्रूवल मिल सके।
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <button
                 onClick={() => setShowInquiryModal(true)}
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-yellow-500 px-6 py-3.5 text-sm sm:text-base font-bold text-blue-950 shadow-lg shadow-yellow-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-yellow-400 hover:shadow-xl cursor-pointer"
+                className="heroCta group inline-flex items-center justify-center gap-2 rounded-full bg-yellow-500 px-6 py-3.5 text-sm sm:text-base font-bold text-blue-950 shadow-lg shadow-yellow-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-yellow-400 hover:shadow-xl cursor-pointer"
               >
                 📞 अभी निःशुल्क सलाह लें
                 <span className="transition-transform group-hover:translate-x-1">→</span>
@@ -455,20 +521,20 @@ const BankSetuFinance = () => {
 
               <a
                 href="#apply"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-white/10 px-6 py-3.5 text-sm sm:text-base font-semibold text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/15 hover:border-yellow-300/40"
+                className="heroCta inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-white/10 px-6 py-3.5 text-sm sm:text-base font-semibold text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/15 hover:border-yellow-300/40"
               >
                 📋 अपनी पात्रता जांचें
               </a>
             </div>
 
-            <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-sm text-blue-100/80">
+            <div className="heroTrust mt-7 flex flex-wrap gap-x-6 gap-y-2 text-sm text-blue-100/80">
               <span>✔ कोई छिपा शुल्क नहीं</span>
               <span>✔ अनेक बैंक विकल्प</span>
               <span>✔ विशेषज्ञ लोन सलाह</span>
             </div>
           </div>
 
-          <div className="relative hidden lg:block min-h-[430px]">
+          <div ref={heroVisualRef} className="heroVisual relative hidden lg:block min-h-[430px]">
             <div className="absolute inset-6 rounded-[2rem] border border-white/10 bg-white/5 shadow-2xl backdrop-blur-sm" />
 
             <div className="absolute left-10 top-10 w-44 rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-xl shadow-xl -rotate-3">
