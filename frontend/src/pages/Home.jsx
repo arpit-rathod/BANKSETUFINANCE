@@ -566,16 +566,41 @@ const BankSetuFinance = () => {
         </div>
       </section>
 
-      <section id="loans" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-4xl md:text-5xl font-bold text-center text-blue-900 mb-4">Our Loan Services</h2>
-          <p className="text-center text-gray-600 mb-12">Tailored financial solutions for every need</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section id="loans" className="py-14 sm:py-16 lg:py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center text-blue-900 mb-3 sm:mb-4">Our Loan Services</h2>
+          <p className="text-center text-sm sm:text-base text-gray-600 mb-8 sm:mb-10 lg:mb-12">Tailored financial solutions for every need</p>
+
+          {/* Two columns even on mobile; compact cards keep the section easy to scan. */}
+          <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3 lg:gap-7">
             {loanTypes.map((loan, idx) => (
-              <div key={idx} className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-t-4" style={{ borderTopColor: loan.color }}>
-                <div className="text-5xl mb-4">{loan.icon}</div>
-                <h3 className="text-2xl font-bold mb-3" style={{ color: loan.color }}>{loan.title}</h3>
-                <p className="text-gray-600">{loan.desc}</p>
+              <div
+                key={idx}
+                className="group flex h-full flex-col rounded-xl sm:rounded-2xl bg-white p-3 sm:p-5 lg:p-6 shadow-md hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 border-t-4"
+                style={{ borderTopColor: loan.color }}
+              >
+                <div className="text-3xl sm:text-4xl lg:text-5xl mb-2 sm:mb-3">{loan.icon}</div>
+
+                <h3
+                  className="text-base sm:text-xl lg:text-2xl font-bold mb-1.5 sm:mb-2"
+                  style={{ color: loan.color }}
+                >
+                  {loan.title}
+                </h3>
+
+                <p className="text-[11px] sm:text-sm lg:text-base leading-4 sm:leading-5 text-gray-600 flex-1">
+                  {loan.desc}
+                </p>
+
+                <button
+                  type="button"
+                  onClick={() => setShowInquiryModal(true)}
+                  className="mt-3 sm:mt-5 inline-flex w-full items-center justify-center gap-1 rounded-lg sm:rounded-xl px-2 sm:px-4 py-2 sm:py-2.5 text-[11px] sm:text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
+                  style={{ backgroundColor: loan.color }}
+                >
+                  Check Eligibility
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                </button>
               </div>
             ))}
           </div>
