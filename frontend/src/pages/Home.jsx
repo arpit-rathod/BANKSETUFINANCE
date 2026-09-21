@@ -470,10 +470,13 @@ const BankSetuFinance = () => {
             ) : (
               <button
                 type="button"
-                onClick={() => setShowInquiryModal(true)}
+                onClick={() => {
+                  setSelectedBank(null);
+                  setShowInquiryModal(true);
+                }}
                 className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
               >
-                WhatsApp Connect
+                Request WhatsApp Connect
               </button>
             )}
 
@@ -797,7 +800,7 @@ const BankSetuFinance = () => {
 
           <div className="relative mx-auto max-w-2xl">
             <div
-              key={heroTitleIndex + selectedBank?.name}
+              key={bankCarouselIndex}
               className="rounded-2xl border border-blue-100 bg-gray-50 p-5 sm:p-7 shadow-lg transition-all duration-500"
             >
               <div className="flex items-center justify-between gap-4">
