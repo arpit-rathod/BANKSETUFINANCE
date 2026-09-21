@@ -15,7 +15,10 @@ const BankSetuFinance = () => {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [heroTitleIndex, setHeroTitleIndex] = useState(0);
+  const [bankCarouselIndex, setBankCarouselIndex] = useState(0);
   const [heroTaglineIndex, setHeroTaglineIndex] = useState(0);
+  const [selectedBank, setSelectedBank] = useState(null);
+  const [bankCity, setBankCity] = useState('');
 
   const canvasRef = useRef(null);
   const heroTitleRef = useRef(null);
@@ -179,6 +182,14 @@ const BankSetuFinance = () => {
   // };
   // function TapButton() {
   // }
+  // Partner bank carousel: one bank at a time, looping continuously.
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setBankCarouselIndex((index) => (index + 1) % banks.length);
+    }, 4000);
+    return () => window.clearInterval(interval);
+  }, []);
+
   // Rotate the small badge every 3.5s and the main title every 5.5s.
   useEffect(() => {
     const interval = window.setInterval(() => {
@@ -306,13 +317,181 @@ const BankSetuFinance = () => {
   ];
 
   const banks = [
-    { name: 'HDFC Bank', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/28/HDFC_Bank_Logo.svg' },
-    { name: 'ICICI Bank', logo: 'https://upload.wikimedia.org/wikipedia/commons/1/12/ICICI_Bank_Logo.svg' },
-    { name: 'SBI', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/SBI-logo.svg' },
-    { name: 'Axis Bank', logo: 'https://upload.wikimedia.org/wikipedia/commons/6/6a/Axis_Bank_logo.svg' },
-    { name: 'Kotak Mahindra', logo: 'https://upload.wikimedia.org/wikipedia/en/4/41/Kotak_Mahindra_Bank_logo.svg' },
-    { name: 'Bank of Baroda', logo: 'https://upload.wikimedia.org/wikipedia/en/4/44/Bank_of_Baroda_logo.svg' }
+    {
+      name: 'HDFC Bank',
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/2/28/HDFC_Bank_Logo.svg',
+      rates: [
+        { type: 'Home Loan', rate: '7.75%–13.20%*' },
+        { type: 'Personal Loan', rate: 'Profile based' },
+        { type: 'Business Loan', rate: 'Profile based' }
+      ]
+    },
+    {
+      name: 'ICICI Bank',
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/1/12/ICICI_Bank_Logo.svg',
+      rates: [
+        { type: 'Home Loan', rate: 'Check current rate' },
+        { type: 'Personal Loan', rate: 'From 13.00%*' },
+        { type: 'Business Loan', rate: 'Profile based' }
+      ]
+    },
+    {
+      name: 'SBI',
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/SBI-logo.svg',
+      rates: [
+        { type: 'Home Loan', rate: 'Check current rate' },
+        { type: 'Personal Loan', rate: 'Profile based' },
+        { type: 'Business Loan', rate: 'Profile based' }
+      ]
+    },
+    {
+      name: 'Axis Bank',
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/6/6a/Axis_Bank_logo.svg',
+      rates: [
+        { type: 'Home Loan', rate: '8.85%–9.50%*' },
+        { type: 'Personal Loan', rate: 'Profile based' },
+        { type: 'Business Loan', rate: 'Profile based' }
+      ]
+    },
+    {
+      name: 'Kotak Mahindra Bank',
+      logo: 'https://upload.wikimedia.org/wikipedia/en/4/41/Kotak_Mahindra_Bank_logo.svg',
+      rates: [
+        { type: 'Home Loan', rate: 'From 7.10%*' },
+        { type: 'Personal Loan', rate: 'From 10.75%*' },
+        { type: 'Business Loan', rate: 'Profile based' }
+      ]
+    },
+    {
+      name: 'Bank of Baroda',
+      logo: 'https://upload.wikimedia.org/wikipedia/en/4/44/Bank_of_Baroda_logo.svg',
+      rates: [
+        { type: 'Home Loan', rate: 'Check current rate' },
+        { type: 'Personal Loan', rate: 'Profile based' },
+        { type: 'Business Loan', rate: 'Profile based' }
+      ]
+    }
   ];
+  const BankDetailsModal = () => {
+    if (!selectedBank) return null;
+
+    const whatsappNumber = selectedBank.whatsappByCity?.[bankCity.trim().toLowerCase()] || '';
+    const executive = selectedBank.executiveByCity?.[bankCity.trim().toLowerCase()];
+
+    const whatsappUrl = whatsappNumber
+      ? `https://wa.me/${whatsappNumber.replace(/\\D/g, '')}?text=${encodeURIComponent(
+          `Hello, I am interested in ${selectedBank.name} loan options in ${bankCity}.`
+        )}`
+      : '';
+
+    return (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+        onClick={() => setSelectedBank(null)}
+      >
+        <div
+          className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-5 sm:p-7 shadow-2xl"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-yellow-600">Partner Bank</p>
+              <h3 className="mt-1 text-2xl font-bold text-blue-900">{selectedBank.name}</h3>
+            </div>
+            <button
+              type="button"
+              onClick={() => setSelectedBank(null)}
+              className="rounded-full p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-800"
+              aria-label="Close bank details"
+            >
+              <X size={22} />
+            </button>
+          </div>
+
+          <div className="mt-5">
+            <label className="mb-2 block text-sm font-semibold text-gray-700">
+              Enter your city
+            </label>
+            <input
+              value={bankCity}
+              onChange={(e) => setBankCity(e.target.value)}
+              placeholder="e.g. Indore, Bhopal, Jabalpur"
+              className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 outline-none transition focus:border-blue-600"
+            />
+          </div>
+
+          <div className="mt-5 rounded-xl bg-gray-50 p-4">
+            <h4 className="font-semibold text-blue-900">Loan rates</h4>
+            <div className="mt-3 space-y-2">
+              {selectedBank.rates.map((item) => (
+                <div key={item.type} className="flex items-center justify-between gap-3 rounded-lg bg-white px-3 py-2.5 text-sm">
+                  <span className="text-gray-700">{item.type}</span>
+                  <span className="font-semibold text-blue-900">{item.rate}</span>
+                </div>
+              ))}
+            </div>
+            <p className="mt-3 text-xs leading-5 text-gray-500">
+              *Displayed rates are indicative and can change based on credit profile, loan amount,
+              tenure and bank policy. Confirm the applicable rate before applying.
+            </p>
+          </div>
+
+          {bankCity.trim() && (
+            <div className="mt-5 rounded-xl border border-blue-100 bg-blue-50 p-4">
+              <h4 className="font-semibold text-blue-900">
+                {executive ? `${selectedBank.name} representative — ${bankCity}` : `Availability in ${bankCity}`}
+              </h4>
+
+              {executive ? (
+                <div className="mt-2 space-y-1 text-sm text-gray-700">
+                  <p><strong>{executive.name}</strong> · {executive.role}</p>
+                  {executive.phone && <p>📞 {executive.phone}</p>}
+                  {executive.email && <p>✉️ {executive.email}</p>}
+                </div>
+              ) : (
+                <p className="mt-2 text-sm leading-5 text-gray-600">
+                  City-specific executive details are added by Bank Setu Finance after verification.
+                  Entering a city helps us route the enquiry to the appropriate local representative.
+                </p>
+              )}
+            </div>
+          )}
+
+          <div className="mt-6 flex flex-col sm:flex-row gap-3">
+            {whatsappUrl ? (
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+              >
+                WhatsApp Connect
+              </a>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setShowInquiryModal(true)}
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+              >
+                WhatsApp Connect
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedBank(null);
+                setShowInquiryModal(true);
+              }}
+              className="inline-flex flex-1 items-center justify-center rounded-xl bg-blue-900 px-5 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-800 hover:shadow-lg"
+            >
+              Send Enquiry
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   const InquiryModal = () => {
     const [data, setData] = useState({
@@ -607,20 +786,75 @@ const BankSetuFinance = () => {
         </div>
       </section>
 
-      <section id="banks" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-4xl md:text-5xl font-bold text-center text-blue-900 mb-4">Our Partner Banks</h2>
-          <p className="text-center text-gray-600 mb-12">Trusted relationships with India's leading financial institutions</p>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {banks.map((bank, idx) => (
-              <div key={idx} className="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition-all hover:scale-105 flex items-center justify-center min-h-24">
-                <img src={bank.logo} alt={bank.name} className="h-12 object-contain" onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                }} />
-                <span className="hidden font-bold text-blue-900 text-sm text-center">{bank.name}</span>
+      <section id="banks" className="py-14 sm:py-16 lg:py-20 bg-white overflow-hidden">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center text-blue-900 mb-3">
+            Our Partner Banks
+          </h2>
+          <p className="text-center text-sm sm:text-base text-gray-600 mb-8 sm:mb-10">
+            Compare loan options and connect with a local representative
+          </p>
+
+          <div className="relative mx-auto max-w-2xl">
+            <div
+              key={heroTitleIndex + selectedBank?.name}
+              className="rounded-2xl border border-blue-100 bg-gray-50 p-5 sm:p-7 shadow-lg transition-all duration-500"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex h-16 w-28 items-center justify-center rounded-xl bg-white p-3 shadow-sm">
+                  <img
+                    src={banks[bankCarouselIndex].logo}
+                    alt={banks[bankCarouselIndex].name}
+                    className="max-h-10 max-w-full object-contain"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.nextSibling.style.display = 'block';
+                    }}
+                  />
+                  <span className="hidden text-center text-sm font-bold text-blue-900">
+                    {banks[bankCarouselIndex].name}
+                  </span>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs uppercase tracking-wider text-gray-500">Partner Bank</p>
+                  <h3 className="text-lg sm:text-2xl font-bold text-blue-900">
+                    {banks[bankCarouselIndex].name}
+                  </h3>
+                </div>
               </div>
-            ))}
+
+              <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-2">
+                {banks[bankCarouselIndex].rates.map((item) => (
+                  <div key={item.type} className="rounded-xl bg-white px-3 py-3 shadow-sm">
+                    <p className="text-xs text-gray-500">{item.type}</p>
+                    <p className="mt-1 text-sm font-bold text-blue-900">{item.rate}</p>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setBankCity('');
+                  setSelectedBank(banks[bankCarouselIndex]);
+                }}
+                className="mt-5 w-full rounded-xl bg-blue-900 px-5 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-800 hover:shadow-xl"
+              >
+                View Rates & Connect →
+              </button>
+            </div>
+
+            <div className="mt-4 flex justify-center gap-2">
+              {banks.map((bank, idx) => (
+                <button
+                  key={bank.name}
+                  type="button"
+                  aria-label={`Show ${bank.name}`}
+                  onClick={() => setBankCarouselIndex(idx)}
+                  className={`h-2 rounded-full transition-all duration-300 ${idx === bankCarouselIndex ? 'w-7 bg-yellow-500' : 'w-2 bg-gray-300 hover:bg-gray-400'}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -677,6 +911,7 @@ const BankSetuFinance = () => {
         </div>
       </footer>
 
+      {selectedBank && <BankDetailsModal />}
       {showInquiryModal && <InquiryModal />}
       {showFeedbackModal && <FeedbackModal />}
     </div>
