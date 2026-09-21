@@ -153,7 +153,7 @@ const BankSetuFinance = () => {
         .from(".heroBadge", { y: 20, opacity: 0, scale: 0.95, duration: 0.5 }, "-=0.2")
         .from(".heroTitle", { y: 35, opacity: 0, duration: 0.65 }, "-=0.15")
         .from(".heroDescription", { y: 20, opacity: 0, duration: 0.55 }, "-=0.2")
-        .from(".heroCta", { y: 18, opacity: 0, duration: 0.45, stagger: 0.1 }, "-=0.15")
+        // Keep hero CTAs visible immediately; animate the surrounding content instead.
         .from(".heroTrust", { y: 12, opacity: 0, duration: 0.4 }, "-=0.1")
         .from(".heroVisual", { x: 45, opacity: 0, duration: 0.8 }, "-=0.55");
 
@@ -695,7 +695,7 @@ const BankSetuFinance = () => {
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <button
                 onClick={() => setShowInquiryModal(true)}
-                className="heroCta group inline-flex items-center justify-center gap-2 rounded-full bg-yellow-500 px-6 py-3.5 text-sm sm:text-base font-bold text-blue-950 shadow-lg shadow-yellow-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-yellow-400 hover:shadow-xl cursor-pointer"
+                className="heroCta group inline-flex items-center justify-center gap-2 rounded-full bg-yellow-500 px-4 py-2.5 text-sm sm:text-base font-bold text-blue-950 shadow-lg shadow-yellow-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-yellow-400 hover:shadow-xl cursor-pointer"
               >
                 📞 अभी निःशुल्क सलाह लें
                 <span className="transition-transform group-hover:translate-x-1">→</span>
@@ -703,7 +703,7 @@ const BankSetuFinance = () => {
 
               <a
                 href="#apply"
-                className="heroCta inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-white/10 px-6 py-3.5 text-sm sm:text-base font-semibold text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/15 hover:border-yellow-300/40"
+                className="heroCta inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2.5 text-sm sm:text-base font-semibold text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/15 hover:border-yellow-300/40"
               >
                 📋 अपनी पात्रता जांचें
               </a>
@@ -750,8 +750,19 @@ const BankSetuFinance = () => {
 
       <section id="loans" className="py-14 sm:py-16 lg:py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-3 sm:px-4">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center text-blue-900 mb-3 sm:mb-4">Our Loan Services</h2>
-          <p className="text-center text-sm sm:text-base text-gray-600 mb-8 sm:mb-10 lg:mb-12">Tailored financial solutions for every need</p>
+          <div className="mx-auto mb-8 sm:mb-10 max-w-2xl text-center">
+            <span className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-yellow-600">
+              <span className="h-px w-7 bg-yellow-500" />
+              Loan Solutions
+              <span className="h-px w-7 bg-yellow-500" />
+            </span>
+            <h2 className="mt-3 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-blue-900">
+              हर जरूरत के लिए सही लोन
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-sm sm:text-base leading-6 text-gray-600">
+              आपकी जरूरत और प्रोफाइल के अनुसार लोन विकल्प चुनने में हम आपकी मदद करते हैं।
+            </p>
+          </div>
 
           {/* Two columns even on mobile; compact cards keep the section easy to scan. */}
           <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3 lg:gap-7">
@@ -791,12 +802,19 @@ const BankSetuFinance = () => {
 
       <section id="banks" className="py-14 sm:py-16 lg:py-20 bg-white overflow-hidden">
         <div className="max-w-5xl mx-auto px-4">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center text-blue-900 mb-3">
-            Our Partner Banks
-          </h2>
-          <p className="text-center text-sm sm:text-base text-gray-600 mb-8 sm:mb-10">
-            Compare loan options and connect with a local representative
-          </p>
+          <div className="mx-auto mb-8 sm:mb-10 max-w-2xl text-center">
+            <span className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-yellow-600">
+              <span className="h-px w-7 bg-yellow-500" />
+              Trusted Bank Network
+              <span className="h-px w-7 bg-yellow-500" />
+            </span>
+            <h2 className="mt-3 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-blue-900">
+              सही बैंक तक पहुंचने का आसान रास्ता
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-sm sm:text-base leading-6 text-gray-600">
+              अलग-अलग बैंक विकल्प देखें, दरों की तुलना करें और अपनी जरूरत के अनुसार आगे बढ़ें।
+            </p>
+          </div>
 
           <div className="relative mx-auto max-w-2xl">
             <div
@@ -862,17 +880,46 @@ const BankSetuFinance = () => {
         </div>
       </section>
 
-      <section id="apply" className="py-20 bg-gradient-to-r from-blue-900 to-blue-600">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Ready to Get Started?</h2>
-          <p className="text-xl text-blue-100 mb-8">Join thousands of satisfied customers who trusted us with their financial needs</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button onClick={() => setShowInquiryModal(true)} className="bg-yellow-500 text-white px-8 py-4 rounded-full font-semibold hover:bg-yellow-600 transition-all hover:shadow-xl">
-              Apply Now
-            </button>
-            <button onClick={() => setShowFeedbackModal(true)} className="bg-white text-blue-900 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-all hover:shadow-xl">
-              Share Feedback
-            </button>
+      <section id="apply" className="relative overflow-hidden bg-[#0A2342] py-16 sm:py-20">
+        <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-yellow-400/10 blur-3xl" />
+        <div className="absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-blue-500/20 blur-3xl" />
+
+        <div className="relative mx-auto max-w-5xl px-4 sm:px-6">
+          <div className="rounded-[2rem] border border-white/10 bg-white/[0.06] p-6 text-center shadow-2xl backdrop-blur-md sm:p-10 lg:p-12">
+            <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-yellow-400 sm:text-sm">
+              <span className="h-px w-8 bg-yellow-400" />
+              Bank Setu Finance
+              <span className="h-px w-8 bg-yellow-400" />
+            </span>
+
+            <h2 className="mx-auto mt-4 max-w-3xl text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+              सही लोन की शुरुआत सही सलाह से होती है।
+            </h2>
+
+            <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-blue-100/85 sm:text-lg">
+              अपनी जरूरत बताइए। हम आपकी प्रोफाइल के अनुसार बैंक और लोन विकल्प समझने में मदद करेंगे।
+            </p>
+
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center">
+              <button
+                onClick={() => setShowInquiryModal(true)}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-yellow-500 px-5 py-3.5 font-bold text-blue-950 transition-all duration-300 hover:-translate-y-0.5 hover:bg-yellow-400 hover:shadow-xl sm:w-auto"
+              >
+                📞 निःशुल्क सलाह लें <span>→</span>
+              </button>
+              <button
+                onClick={() => setShowFeedbackModal(true)}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-5 py-3.5 font-semibold text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/15 sm:w-auto"
+              >
+                Feedback साझा करें
+              </button>
+            </div>
+
+            <div className="mt-7 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-blue-100/70 sm:text-sm">
+              <span>✓ कोई छिपा शुल्क नहीं</span>
+              <span>✓ कई बैंक विकल्प</span>
+              <span>✓ विशेषज्ञ मार्गदर्शन</span>
+            </div>
           </div>
         </div>
       </section>
